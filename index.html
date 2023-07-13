@@ -6,12 +6,28 @@
     function addTask() {
       var taskName = document.getElementById("taskName").value;
       var taskDate = document.getElementById("taskDate").value;
-      var task = { name: taskName, date: taskDate };
+      var task = taskName + ":" + taskDate + "\n";
       
-      // Send task data to the server or perform any desired actions
-      // You can use AJAX, fetch API, or any other preferred method
-      
-      alert("Task added: " + JSON.stringify(task));
+      // Create a new text file blob
+      var blob = new Blob([task], { type: 'text/plain' });
+
+      // Generate a unique file name based on the current date and time
+      var timestamp = new Date().toISOString().replace(/[-:.]/g, '');
+      var fileName = 'tasks_' + timestamp + '.txt';
+
+      // Create a temporary link element to trigger the download
+      var link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = fileName;
+
+      // Append the link to the document and trigger the download
+      document.body.appendChild(link);
+      link.click();
+
+      // Clean up the temporary link element
+      document.body.removeChild(link);
+
+      // Reset the form
       resetForm();
     }
     
